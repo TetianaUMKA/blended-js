@@ -120,13 +120,14 @@ table {
 /* ----- common css ----- */
 
 .container {
+  position: relative;
   max-width: 1120px;
   min-height: 100vh;
   padding: 80px 20px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 50px;
   align-items: center;
   background-color: rgb(247, 245, 243);
 }
@@ -146,18 +147,19 @@ table {
   font-size: 18px;
 }
 
-.color-swicher-btn {
+.btn {
   padding: 10px 20px;
   font-size: 18px;
   background-color: rgb(221, 187, 240);
   border-radius: var(--radius);
 }
 
-.first-circle {
+.circle {
   width: 200px;
   height: 200px;
   background-color: rgb(89, 116, 235);
   border-radius: 50%;
+  transition: background-color 300ms ease-out, transform 500ms ease-in-out;
 }
 
 .close-btn {
@@ -165,6 +167,59 @@ table {
   top: 5%;
   left: 85%;
   padding: 10px 20px;
-  background-color: rgb(207, 156, 233);
+  background-color: #b6b3fb;
+  border-radius: var(--radius);
+}
+
+.calculator {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.calc-inputs {
+  display: flex;
+  justify-content: space-around;
+}
+
+.calc-input {
+  max-width: 100px;
+  padding: 12px 4px;
+  font-size: 18px;
+  border: 2px solid orange;
+  border-radius: var(--radius);
+}
+
+.calc-input::placeholder {
+  font-size: 14px;
+}
+
+.calcBtns {
+  display: flex;
+  gap: 50px;
+}
+
+.calc-btn {
+  font-weight: 600;
+  padding: 10px 20px;
+  color: green;
+  border: 2px solid green;
+  border-radius: var(--radius);
+}
+
+.result-title {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-weight: 600;
+  color: rgb(100, 37, 14);
+}
+
+.result-field {
+  align-content: center;
+  font-size: 24px;
+  min-width: 60px;
+  min-height: 60px;
+  border: 2px solid rgb(100, 37, 14);
   border-radius: var(--radius);
 }
