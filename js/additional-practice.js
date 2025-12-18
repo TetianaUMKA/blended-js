@@ -523,6 +523,27 @@ console.log(inReversedOrder); // [ "Solomon", "Kai", "Jacob", "Ganymede", "Artem
 
 // #endregion toSorted
 
+// #region call, apply
+const changeColor = function (color) {
+  console.log('changeColor -> this', this);
+  this.color = color;
+};
+
+const hat = {
+  color: 'black',
+};
+
+changeColor.call(hat, 'orange');
+console.log(hat);
+
+const sweater = {
+  color: 'green',
+};
+
+changeColor.call(sweater, 'pink');
+console.log(sweater);
+// #endregion
+
 // #region foo.bind(objectName, arg, arg, ...)
 
 const customer3 = {
@@ -566,4 +587,188 @@ const library3 = {
 const showBooks2 = library2.logBookCount.bind(library3);
 
 showBooks2();
+
+const counter = {
+  value: 0,
+  increment(value) {
+    console.log('increment -> this', this);
+    this.value += value;
+  },
+  descrement(value) {
+    console.log('descrement -> this', this);
+    this.value -= value;
+  },
+};
+
+const updateCounter = function (value, operation) {
+  operation(value);
+};
+
+updateCounter(37, counter.increment.bind(counter));
+updateCounter(10, counter.descrement.bind(counter));
+const countedValue = counter.value;
+console.log('The counted value equals: ', countedValue);
 // #endregion bind
+
+// #region [[Prototype]]
+
+const animal = {
+  legs: 4,
+  furCoat: true,
+};
+
+const dog = Object.create(animal);
+console.log(dog);
+
+const isPrototype = animal.isPrototypeOf(dog);
+console.log('Being prototype', isPrototype);
+
+dog.name = 'Rex';
+console.log(dog);
+
+console.log(dog.hasOwnProperty('name'));
+console.log(dog.hasOwnProperty('legs'));
+
+const ownProperties = [];
+const inheritedProperties = [];
+for (const key in dog) {
+  if (dog.hasOwnProperty(key)) {
+    ownProperties.push(key);
+  } else inheritedProperties.push(key);
+}
+console.log(ownProperties);
+console.log(inheritedProperties);
+
+console.log(Object.keys(dog));
+console.log(Object.keys(animal));
+
+// #endregion
+
+// #region OOP class constructor new instance
+
+class Employee {
+  baseSalary;
+  overtime;
+  rate;
+  constructor(baseSalary, overtime, rate) {
+    this.baseSalary = baseSalary;
+    this.overtime = overtime;
+    this.rate = rate;
+  }
+}
+
+const manager = new Employee(10000, 5400, 2300);
+console.log(manager);
+
+class Car {
+  static createdAutosNumber = 0;
+  #privatePrice;
+
+  constructor(brand, model, power, price, color, privatePrice) {
+    this.brand = brand;
+    this.model = model;
+    this.power = power;
+    this.price = price;
+    this.color = color;
+    this.#privatePrice = privatePrice;
+
+    Car.createdAutosNumber += 1;
+  }
+
+  get privatePrice() {
+    return this.#privatePrice;
+  }
+
+  set privatePrice(newPrivatePrice) {
+    let minPrivatePrice = this.price - this.price * 0.2;
+    if (newPrivatePrice < minPrivatePrice) {
+      return;
+    }
+    this.#privatePrice = newPrivatePrice;
+  }
+
+  applyDiscount(discount) {
+    this.price -= this.price * discount;
+  }
+
+  static showCreatedAutosNumber() {
+    console.log(Car.createdAutosNumber);
+  }
+}
+
+const audi = new Car('AUDI', 'Q8', '340', 95000, 'white', 90000);
+const toyota = new Car('TOYOTA', 'camry', '280', 45000, 'black', 40000);
+
+console.log(audi);
+console.log(toyota);
+
+audi.color = 'blue';
+console.log(audi);
+
+audi.applyDiscount(0.05);
+console.log(audi.price);
+
+console.log(audi.privatePrice);
+audi.privatePrice = 88000;
+console.log(audi.privatePrice);
+audi.privatePrice = 67000;
+console.log(audi.privatePrice);
+console.log(audi);
+
+console.log(Car.createdAutosNumber); // 2
+
+Car.showCreatedAutosNumber();
+// #endregion
+
+// #region class extends super()
+class Hero {
+  constructor(settings = { health: 10, experience: 0, bullets: 15 }) {
+    this.health = settings.health;
+    this.experience = settings.experience;
+    this.bullets = settings.bullets;
+  }
+}
+
+// Pattern 'params object'
+const setOptionsHero = {
+  health: 50,
+  experience: 0,
+  bullets: 30,
+};
+
+const warrior = new Hero(setOptionsHero);
+console.log('New Hero: ', warrior);
+
+class Superhero extends Hero {
+  constructor(missiles) {
+    super({ health: 100, experience: 100, bullets: 60 });
+    this.missiles = missiles;
+  }
+
+  attack() {
+    console.log(
+      `Super attacked with ${this.missiles} and gain 10 point of experience`
+    );
+    this.experience += 10;
+  }
+}
+
+const superWarrior = new Superhero(10);
+
+console.log('Super Warrior', superWarrior);
+
+superWarrior.attack();
+console.log(superWarrior);
+console.log('Updated superWarrior experience', superWarrior.experience);
+
+class Mage extends Hero {
+  cast(spell) {
+    console.log(`Mage is casting ${spell}🧙🏽‍♂️`);
+  }
+}
+
+const newMage = new Mage();
+
+newMage.cast('Wah-to-be-doch');
+console.log(newMage);
+// #endregion
